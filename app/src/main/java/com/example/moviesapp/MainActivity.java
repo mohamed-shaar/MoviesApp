@@ -3,6 +3,8 @@ package com.example.moviesapp;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -89,5 +91,26 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Failure in request: ", t.getMessage());
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_top_rated_movies:
+                loadTopRatedMovies();
+                return  true;
+            case R.id.menu_popular_movies:
+                loadPopularMovies();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 }
