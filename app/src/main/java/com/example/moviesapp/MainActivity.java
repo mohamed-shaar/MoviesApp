@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
 
         //loadPopularMovies();
-        loadTopRatedMovies();
+        //loadTopRatedMovies();
 
 
     }
