@@ -16,6 +16,15 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
 
     private Context context;
     private ArrayList<String> posterList;
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
 
     public PosterAdapter(Context context, ArrayList<String> posterList) {
         this.context = context;
@@ -47,6 +56,18 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
         public PosterViewHolder(@NonNull View itemView) {
             super(itemView);
             iv_poster = itemView.findViewById(R.id.iv_poster);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            mListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

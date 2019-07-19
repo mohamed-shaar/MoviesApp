@@ -2,10 +2,13 @@ package com.example.moviesapp;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,14 +18,23 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PosterAdapter.OnItemClickListener{
 
     private JsonPlaceHolderApi jsonPlaceHolderApi;
+    private ArrayList<String> posterUrls;
+
+    private RecyclerView recyclerView;
+    private PosterAdapter posterAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        recyclerView = findViewById(R.id.rv_posters);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // TODO stopped here
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.themoviedb.org/")
@@ -30,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+        posterUrls = new ArrayList<>();
 
         //loadPopularMovies();
         //loadTopRatedMovies();
@@ -52,9 +65,10 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 else {
-                    RequestInformation requestInformation = response.body();
+                    /*RequestInformation requestInformation = response.body();
                     int page = requestInformation.getPage();
-                    Log.d("pages top rated: ", String.valueOf(page));
+                    Log.d("pages top rated: ", String.valueOf(page));*/
+                    buildPosterUrls(response.body());
                 }
             }
 
@@ -80,9 +94,10 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 else {
-                    RequestInformation requestInformation = response.body();
+                    /*RequestInformation requestInformation = response.body();
                     int page = requestInformation.getPage();
-                    Log.d("pages popular: ", String.valueOf(page));
+                    Log.d("pages popular: ", String.valueOf(page));*/
+                    buildPosterUrls(response.body());
                 }
             }
 
@@ -91,6 +106,13 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Failure in request: ", t.getMessage());
             }
         });
+    }
+
+    private void buildPosterUrls(RequestInformation requestInformation){
+        String baseUrl = " http://image.tmdb.org/t/p/w185";
+        for (Result result: requestInformation.getResults()){
+            posterUrls.add(baseUrl + result.getPosterPath());
+        }
     }
 
     @Override
@@ -111,6 +133,11 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+    }
+
+    @Override
+    public void onItemClick(int position) {
 
     }
 }
