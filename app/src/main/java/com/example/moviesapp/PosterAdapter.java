@@ -55,7 +55,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
 
         public PosterViewHolder(@NonNull View itemView) {
             super(itemView);
-            iv_poster = itemView.findViewById(R.id.iv_poster);
+            iv_poster = itemView.findViewById(R.id.ivposter);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
