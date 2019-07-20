@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -23,8 +24,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements PosterAdapter.OnItemClickListener{
 
+    public static final String EXTRA_TITLE = "title";
+    public static final String EXTRA_RELEASE_DATE = "release_date";
+    public static final String EXTRA_POSTER_PATH = "poster_path";
+    public static final String EXTRA_VOTE_AVERAGE = "vote_average";
+    public static final String EXTRA_PLOT_SYNOPSIS = "plot_synopsis";
+    public static final String BASE_URL = "http://image.tmdb.org/t/p/w185";
+
     private JsonPlaceHolderApi jsonPlaceHolderApi;
-    private ArrayList<String> posterUrls;// = new ArrayList<>();
+    private ArrayList<String> posterUrls;
+    private List<Result> resultList;
 
     private RecyclerView recyclerView;
     private PosterAdapter posterAdapter;
@@ -41,22 +50,16 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
 
         jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
         posterUrls = new ArrayList<>();
+        resultList = new ArrayList<Result>();
 
         recyclerView = findViewById(R.id.rv_posters);
         recyclerView.setHasFixedSize(false);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dptopx(4), true));
         loadPopularMovies();
         posterAdapter = new PosterAdapter(MainActivity.this, posterUrls);
-        //Log.d("Second Poster size:", String.valueOf(posterUrls.size()));
         recyclerView.setAdapter(posterAdapter);
         posterAdapter.setOnItemClickListener(MainActivity.this);
-
-        //loadPopularMovies();
-        //loadTopRatedMovies();
-
-
     }
 
     private void loadTopRatedMovies() {
@@ -75,15 +78,10 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
                 }
                 else {
                     RequestInformation requestInformation = response.body();
-                    /*
-                    int page = requestInformation.getPage();
-                    Log.d("pages top rated: ", String.valueOf(page));*/
-                    //buildPosterUrls(response.body());
-                    //setLayout();
-                    String baseUrl = "http://image.tmdb.org/t/p/w185";
+                    resultList = requestInformation.getResults();
                     for (Result result: requestInformation.getResults()){
-                        Log.d("Poster Path ", baseUrl + result.getPosterPath());
-                        posterUrls.add(baseUrl + result.getPosterPath());
+                        Log.d("Poster Path ", BASE_URL + result.getPosterPath());
+                        posterUrls.add(BASE_URL + result.getPosterPath());
                     }
                     posterAdapter.notifyDataSetChanged();
                 }
@@ -94,10 +92,6 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
                 Log.d("Failure in request: ", t.getMessage());
             }
         });
-        /*posterAdapter = new PosterAdapter(MainActivity.this, posterUrls);
-        Log.d("Second Poster size:", String.valueOf(posterUrls.size()));
-        recyclerView.setAdapter(posterAdapter);
-        posterAdapter.setOnItemClickListener(MainActivity.this);*/
 
     }
 
@@ -117,20 +111,11 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
                 }
                 else {
                     RequestInformation requestInformation = response.body();
-                    //int page = requestInformation.getResults().size();
-                    //Log.d("results size: ", String.valueOf(page));
-                    //buildPosterUrls(requestInformation);
-                    //setLayout();
-                    String baseUrl = "http://image.tmdb.org/t/p/w185";
+                    resultList = requestInformation.getResults();
                     for (Result result: requestInformation.getResults()){
-                        Log.d("Poster Path ", baseUrl + result.getPosterPath());
-                        posterUrls.add(baseUrl + result.getPosterPath());
+                        Log.d("Poster Path ", BASE_URL + result.getPosterPath());
+                        posterUrls.add(BASE_URL + result.getPosterPath());
                     }
-                    //setLayout();
-                    /*posterAdapter = new PosterAdapter(MainActivity.this, posterUrls);
-                    Log.d("Second Poster size:", String.valueOf(posterUrls.size()));
-                    recyclerView.setAdapter(posterAdapter);
-                    posterAdapter.setOnItemClickListener(MainActivity.this);*/
                     posterAdapter.notifyDataSetChanged();
                     Log.d("adapter coubt ",""+ posterAdapter.getItemCount());
 
@@ -142,23 +127,9 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
                 Log.d("Failure in request: ", t.getMessage());
             }
         });
-        /*posterAdapter = new PosterAdapter(MainActivity.this, posterUrls);
-        Log.d("Second Poster size:", String.valueOf(posterUrls.size()));
-        recyclerView.setAdapter(posterAdapter);
-        posterAdapter.setOnItemClickListener(MainActivity.this);*/
     }
 
-    private void buildPosterUrls(RequestInformation requestInformation){
-        String baseUrl = " http://image.tmdb.org/t/p/w185";
-        Log.d("First Results size ", String.valueOf(requestInformation.getResults().size()));
-        for (Result result: requestInformation.getResults()){
-            //Log.d("Poster Path ", baseUrl + result.getPosterPath());
-            posterUrls.add(baseUrl + result.getPosterPath());
-        }
-        for (int i = 0; i < posterUrls.size(); i++) {
-            Log.d("Poster " + i, posterUrls.get(i));
-        }
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -171,11 +142,9 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
         switch (item.getItemId()){
             case R.id.menu_top_rated_movies:
                 loadTopRatedMovies();
-                //setLayout();
                 return  true;
             case R.id.menu_popular_movies:
                 loadPopularMovies();
-                //setLayout();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -186,15 +155,12 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
     @Override
     public void onItemClick(int position) {
         Intent detailIntent = new Intent(this, MovieDetailActivity.class);
-
-        //startActivity(detailIntent);
-    }
-
-    private void setLayout(){
-        posterAdapter = new PosterAdapter(MainActivity.this, posterUrls);
-        //Log.d("Second Poster size:", String.valueOf(posterUrls.size()));
-        recyclerView.setAdapter(posterAdapter);
-        posterAdapter.setOnItemClickListener(MainActivity.this);
+        detailIntent.putExtra(EXTRA_TITLE, resultList.get(position).getTitle());
+        detailIntent.putExtra(EXTRA_RELEASE_DATE, resultList.get(position).getReleaseDate());
+        detailIntent.putExtra(EXTRA_POSTER_PATH, resultList.get(position).getPosterPath());
+        detailIntent.putExtra(EXTRA_VOTE_AVERAGE, resultList.get(position).getVoteAverage());
+        detailIntent.putExtra(EXTRA_PLOT_SYNOPSIS, resultList.get(position).getOverview());
+        startActivity(detailIntent);
     }
 
     private int dptopx(int dp){
