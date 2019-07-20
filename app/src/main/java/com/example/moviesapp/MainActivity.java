@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
 
     private void loadTopRatedMovies() {
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("api_key", "f34c452797e2d497fae6179c165c4f4a");
+        //API key
+        parameters.put("api_key", "");
         posterUrls.clear();
         Call<RequestInformation> call = jsonPlaceHolderApi.getTopRatedMovies(parameters);
 
@@ -97,7 +98,8 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
 
     private void loadPopularMovies(){
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("api_key", "f34c452797e2d497fae6179c165c4f4a");
+        //API key
+        parameters.put("api_key", "");
         posterUrls.clear();
         Call<RequestInformation> call = jsonPlaceHolderApi.getPopularMovies(parameters);
 
