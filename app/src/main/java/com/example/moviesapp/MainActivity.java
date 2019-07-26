@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
     public static final String EXTRA_POSTER_PATH = "poster_path";
     public static final String EXTRA_VOTE_AVERAGE = "vote_average";
     public static final String EXTRA_PLOT_SYNOPSIS = "plot_synopsis";
-    public static final String BASE_URL = "http://image.tmdb.org/t/p/w185";
+    public static final String BASE_URL = "http://image.tmdb.org/t/p/original";
 
     private JsonPlaceHolderApi jsonPlaceHolderApi;
     private ArrayList<String> posterUrls;
@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
 
         recyclerView = findViewById(R.id.rv_posters);
         recyclerView.setHasFixedSize(false);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dptopx(4), true));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        //recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dptopx(2), true));
         loadPopularMovies();
         posterAdapter = new PosterAdapter(MainActivity.this, posterUrls);
         recyclerView.setAdapter(posterAdapter);
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
     private void loadTopRatedMovies() {
         Map<String, String> parameters = new HashMap<>();
         //API key
-        parameters.put("api_key", "");
+        parameters.put("api_key", "f34c452797e2d497fae6179c165c4f4a");
         posterUrls.clear();
         Call<RequestInformation> call = jsonPlaceHolderApi.getTopRatedMovies(parameters);
 
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
     private void loadPopularMovies(){
         Map<String, String> parameters = new HashMap<>();
         //API key
-        parameters.put("api_key", "");
+        parameters.put("api_key", "f34c452797e2d497fae6179c165c4f4a");
         posterUrls.clear();
         Call<RequestInformation> call = jsonPlaceHolderApi.getPopularMovies(parameters);
 
