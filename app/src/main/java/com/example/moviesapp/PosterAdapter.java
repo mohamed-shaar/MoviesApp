@@ -41,7 +41,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
     @Override
     public void onBindViewHolder(@NonNull PosterViewHolder posterViewHolder, int i) {
         String posterUrl = posterList.get(i);
-        Picasso.get().load(posterUrl).fit().centerInside().into(posterViewHolder.iv_poster);
+        Picasso.get().load(posterUrl).fit().centerCrop().into(posterViewHolder.iv_poster);
     }
 
     @Override
