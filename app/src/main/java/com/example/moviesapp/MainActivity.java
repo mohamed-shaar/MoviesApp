@@ -3,6 +3,8 @@ package com.example.moviesapp;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -162,7 +165,9 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
         detailIntent.putExtra(EXTRA_POSTER_PATH, resultList.get(position).getPosterPath());
         detailIntent.putExtra(EXTRA_VOTE_AVERAGE, resultList.get(position).getVoteAverage());
         detailIntent.putExtra(EXTRA_PLOT_SYNOPSIS, resultList.get(position).getOverview());
-        startActivity(detailIntent);
+        ImageView imageView = findViewById(R.id.ivposter);
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, imageView, ViewCompat.getTransitionName(imageView));
+        startActivity(detailIntent, optionsCompat.toBundle());
     }
 
     private int dptopx(int dp){
