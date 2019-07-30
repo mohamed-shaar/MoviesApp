@@ -48,7 +48,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         String posterUrl = BASE_URL + poster_path;
         Log.d("detail poster url ", posterUrl);
 
-        Picasso.get().load(posterUrl).fit().centerInside().into(iv_poster);
+        Picasso.get().load(posterUrl).fit().centerCrop().into(iv_poster);
         tv_title.setText(title);
         tv_release_date.setText(release_date);
         tv_vote_average.setText(String.valueOf(vote_average));
