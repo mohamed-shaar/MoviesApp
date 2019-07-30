@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
         detailIntent.putExtra(EXTRA_POSTER_PATH, resultList.get(position).getPosterPath());
         detailIntent.putExtra(EXTRA_VOTE_AVERAGE, resultList.get(position).getVoteAverage());
         detailIntent.putExtra(EXTRA_PLOT_SYNOPSIS, resultList.get(position).getOverview());
-        ImageView imageView = findViewById(R.id.ivposter);
+        ImageView imageView = findViewById(R.id.iv_poster);
         ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, imageView, ViewCompat.getTransitionName(imageView));
         startActivity(detailIntent, optionsCompat.toBundle());
     }
