@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
         recyclerView = findViewById(R.id.rv_posters);
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        //recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dptopx(2), true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dptopx(2), true));
         loadPopularMovies();
         posterAdapter = new PosterAdapter(MainActivity.this, posterUrls);
         recyclerView.setAdapter(posterAdapter);
