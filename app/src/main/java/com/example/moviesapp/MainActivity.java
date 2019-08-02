@@ -3,16 +3,16 @@ package com.example.moviesapp;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.ProgressBar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
 
     private RecyclerView recyclerView;
     private PosterAdapter posterAdapter;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
         resultList = new ArrayList<Result>();
 
         recyclerView = findViewById(R.id.rv_posters);
+        progressBar = findViewById(R.id.progressBar);
+        showProgressBar();
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dptopx(2), true));
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
                         posterUrls.add(BASE_URL + result.getPosterPath());
                     }
                     posterAdapter.notifyDataSetChanged();
+                    showRecyclerView();
                 }
             }
 
@@ -96,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
                 Log.d("Failure in request: ", t.getMessage());
             }
         });
-
     }
 
     private void loadPopularMovies(){
@@ -122,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
                         posterUrls.add(BASE_URL + result.getPosterPath());
                     }
                     posterAdapter.notifyDataSetChanged();
+                    showRecyclerView();
                     Log.d("adapter coubt ",""+ posterAdapter.getItemCount());
 
                 }
@@ -132,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
                 Log.d("Failure in request: ", t.getMessage());
             }
         });
+
     }
 
 
@@ -165,13 +170,20 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
         detailIntent.putExtra(EXTRA_POSTER_PATH, resultList.get(position).getPosterPath());
         detailIntent.putExtra(EXTRA_VOTE_AVERAGE, resultList.get(position).getVoteAverage());
         detailIntent.putExtra(EXTRA_PLOT_SYNOPSIS, resultList.get(position).getOverview());
-        ImageView imageView = findViewById(R.id.iv_poster);
-        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, imageView, ViewCompat.getTransitionName(imageView));
-        startActivity(detailIntent, optionsCompat.toBundle());
+        startActivity(detailIntent);
     }
 
     private int dptopx(int dp){
         Resources resource = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resource.getDisplayMetrics()));
+    }
+
+    private void showProgressBar(){
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
+    }
+    private void showRecyclerView(){
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 }
