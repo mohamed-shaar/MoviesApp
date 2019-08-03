@@ -7,7 +7,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.example.moviesapp.room.MovieViewModel;
 import com.squareup.picasso.Picasso;
 
 import static com.example.moviesapp.MainActivity.BASE_URL;
@@ -24,6 +26,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView tv_release_date;
     private TextView tv_vote_average;
     private TextView tv_plot;
+
+    private MovieViewModel movieViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,5 +58,17 @@ public class MovieDetailActivity extends AppCompatActivity {
         tv_release_date.setText(release_date);
         tv_vote_average.setText(String.valueOf(vote_average));
         tv_plot.setText(plot);
+
+        movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+        /**
+         *  TODO
+         *  1)check if movie has id in request
+         *  2)test database
+         *  3)check if button can be changed, if not then change text. ex. Add to favorites -> remove from favorites
+         *  4)add recyclerView adapter for liked movies
+         *  5)check if project needs savedInstance
+         *  6)check youtube api from coding with mitch
+         *  7)add trailers to intent data
+         */
     }
 }
