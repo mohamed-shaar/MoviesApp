@@ -6,20 +6,23 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "movie_table")
 public class Movie {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private Integer id;
-    private String title;
-    private String date;
-    private String description;
-    private float rate;
-    private String posterUrl;
 
-    public Movie(String title, String date, String description, float rate, String posterUrl) {
+    private String title;
+    private String release_date;
+    private String plot;
+    private float vote_average;
+    private String poster_path;
+
+    public Movie(){}
+
+    public Movie(String title, String release_date, String description, float vote_average, String poster_path) {
         this.title = title;
-        this.date = date;
-        this.description = description;
-        this.rate = rate;
-        this.posterUrl = posterUrl;
+        this.release_date = release_date;
+        this.plot = description;
+        this.vote_average = vote_average;
+        this.poster_path = poster_path;
     }
 
     public String getTitle() {
@@ -30,36 +33,36 @@ public class Movie {
         this.title = title;
     }
 
-    public String getDate() {
-        return date;
+    public String getRelease_date() {
+        return release_date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setRelease_date(String release_date) {
+        this.release_date = release_date;
     }
 
-    public String getDescription() {
-        return description;
+    public String getPlot() {
+        return plot;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPlot(String plot) {
+        this.plot = plot;
     }
 
-    public float getRate() {
-        return rate;
+    public float getVote_average() {
+        return vote_average;
     }
 
-    public void setRate(float rate) {
-        this.rate = rate;
+    public void setVote_average(float vote_average) {
+        this.vote_average = vote_average;
     }
 
-    public String getPosterUrl() {
-        return posterUrl;
+    public String getPoster_path() {
+        return poster_path;
     }
 
-    public void setPosterUrl(String posterUrl) {
-        this.posterUrl = posterUrl;
+    public void setPoster_path(String poster_path) {
+        this.poster_path = poster_path;
     }
 
     public Integer getId() {

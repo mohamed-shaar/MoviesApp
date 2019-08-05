@@ -9,10 +9,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.moviesapp.room.Movie;
 import com.example.moviesapp.room.MovieViewModel;
 import com.squareup.picasso.Picasso;
 
 import static com.example.moviesapp.MainActivity.BASE_URL;
+import static com.example.moviesapp.MainActivity.EXTRA_ID;
 import static com.example.moviesapp.MainActivity.EXTRA_PLOT_SYNOPSIS;
 import static com.example.moviesapp.MainActivity.EXTRA_POSTER_PATH;
 import static com.example.moviesapp.MainActivity.EXTRA_RELEASE_DATE;
@@ -40,6 +42,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         String poster_path = detailIntent.getStringExtra(EXTRA_POSTER_PATH);
         float vote_average = detailIntent.getFloatExtra(EXTRA_VOTE_AVERAGE, 0);
         String plot = detailIntent.getStringExtra(EXTRA_PLOT_SYNOPSIS);
+        Integer id = detailIntent.getIntExtra(EXTRA_ID, 0);
 
         Log.d(" detail vote ", String.valueOf(vote_average));
         Log.d(" detail poster path", poster_path);
@@ -60,10 +63,15 @@ public class MovieDetailActivity extends AppCompatActivity {
         tv_plot.setText(plot);
 
         movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+
+        Movie movie = new Movie(title, release_date, plot, vote_average, poster_path);
+        movie.setId(id);
+        movieViewModel.insert(movie);
+
         /**
          *  TODO
-         *  1)check if movie has id in request
-         *  2)test database
+         *  1)check if movie has id in request (done)
+         *  2)test database (done)
          *  3)check if button can be changed, if not then change text. ex. Add to favorites -> remove from favorites
          *  4)add recyclerView adapter for liked movies
          *  5)check if project needs savedInstance

@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
     public static final String EXTRA_POSTER_PATH = "poster_path";
     public static final String EXTRA_VOTE_AVERAGE = "vote_average";
     public static final String EXTRA_PLOT_SYNOPSIS = "plot_synopsis";
+    public static final String EXTRA_ID = "id";
     public static final String BASE_URL = "http://image.tmdb.org/t/p/original";
 
     private JsonPlaceHolderApi jsonPlaceHolderApi;
@@ -170,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
         detailIntent.putExtra(EXTRA_POSTER_PATH, resultList.get(position).getPosterPath());
         detailIntent.putExtra(EXTRA_VOTE_AVERAGE, resultList.get(position).getVoteAverage());
         detailIntent.putExtra(EXTRA_PLOT_SYNOPSIS, resultList.get(position).getOverview());
+        detailIntent.putExtra(EXTRA_ID, resultList.get(position).getId());
         startActivity(detailIntent);
     }
 
