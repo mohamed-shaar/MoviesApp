@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MovieViewModel extends AndroidViewModel {
 
@@ -22,6 +23,8 @@ public class MovieViewModel extends AndroidViewModel {
     public void insert(Movie movie){ movieRepository.insert(movie);}
 
     public void delete(Movie movie){ movieRepository.delete(movie);}
+
+    public Movie queryById(Movie movie) throws ExecutionException, InterruptedException { return movieRepository.queryById(movie);}
 
     public LiveData<List<Movie>> getAllMovies() {return allMovies;}
 }

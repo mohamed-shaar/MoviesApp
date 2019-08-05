@@ -3,6 +3,7 @@ package com.example.moviesapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +29,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView tv_release_date;
     private TextView tv_vote_average;
     private TextView tv_plot;
+    private Button btn_add_remove_favorites;
 
     private MovieViewModel movieViewModel;
 

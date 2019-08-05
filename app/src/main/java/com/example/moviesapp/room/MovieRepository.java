@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MovieRepository {
 
@@ -24,6 +25,10 @@ public class MovieRepository {
 
     public void delete(Movie movie) {
         new DeleteMovieAsyncTask(movieDao).execute(movie);
+    }
+
+    public Movie queryById(Movie movie) throws ExecutionException, InterruptedException {
+        return new QueryAsyncTask(movieDao).execute(movie).get();
     }
 
     public LiveData<List<Movie>> getAllMovies() {
@@ -57,6 +62,18 @@ public class MovieRepository {
         protected Void doInBackground(Movie... movies) {
             movieDao.delete(movies[0]);
             return null;
+        }
+    }
+
+    private static class QueryAsyncTask extends AsyncTask<Movie, Void, Movie>{
+
+        private MovieDao movieDao;
+
+        private QueryAsyncTask(MovieDao movieDao){this.movieDao = movieDao;}
+
+        @Override
+        protected Movie doInBackground(Movie... movies) {
+            return movieDao.getMovieById(movies[0].getId());
         }
     }
 }

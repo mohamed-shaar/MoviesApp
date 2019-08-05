@@ -76,5 +76,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/middle_view" />
 
+    <Button
+        android:id="@+id/btn_add_remove_to_favorites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_detail_plot"
+        android:text="@string/add_to_favorites"
+        android:background="@color/colorPrimary"/>
+
 
 </RelativeLayout>

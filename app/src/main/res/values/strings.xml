@@ -4,4 +4,5 @@
     <string name="popular_movies">Popular Movies</string>
     <string name="poster">poster</string>
     <string name="poster_transition">poster_transition</string>
+    <string name="add_to_favorites">Add to Favorites</string>
 </resources>
