@@ -69,6 +69,7 @@ public class MovieDetailActivity extends AppCompatActivity {
          *  5)check if project needs savedInstance
          *  6)check youtube api from coding with mitch
          *  7)add trailers to intent data
+         *  8)add background from request
          */
     }
 }
