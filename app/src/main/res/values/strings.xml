@@ -5,4 +5,5 @@
     <string name="poster">poster</string>
     <string name="poster_transition">poster_transition</string>
     <string name="add_to_favorites">Add to Favorites</string>
+    <string name="remove_from_favorites">Remove from favorites</string>
 </resources>

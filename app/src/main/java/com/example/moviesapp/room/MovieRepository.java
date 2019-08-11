@@ -31,6 +31,10 @@ public class MovieRepository {
         return new QueryAsyncTask(movieDao).execute(movie).get();
     }
 
+    public LiveData<Movie> liveDataQueryById(Movie movie) {
+        return movieDao.liveDataGetMovieById(movie.getId());
+    }
+
     public LiveData<List<Movie>> getAllMovies() {
         return allMovies;
     }
@@ -65,11 +69,13 @@ public class MovieRepository {
         }
     }
 
-    private static class QueryAsyncTask extends AsyncTask<Movie, Void, Movie>{
+    private static class QueryAsyncTask extends AsyncTask<Movie, Void, Movie> {
 
         private MovieDao movieDao;
 
-        private QueryAsyncTask(MovieDao movieDao){this.movieDao = movieDao;}
+        private QueryAsyncTask(MovieDao movieDao) {
+            this.movieDao = movieDao;
+        }
 
         @Override
         protected Movie doInBackground(Movie... movies) {

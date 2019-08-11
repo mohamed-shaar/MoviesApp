@@ -26,5 +26,7 @@ public class MovieViewModel extends AndroidViewModel {
 
     public Movie queryById(Movie movie) throws ExecutionException, InterruptedException { return movieRepository.queryById(movie);}
 
+    public LiveData<Movie> liveDataQueryById(Movie movie){ return movieRepository.liveDataQueryById(movie);}
+
     public LiveData<List<Movie>> getAllMovies() {return allMovies;}
 }
