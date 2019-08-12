@@ -82,6 +82,8 @@ public class MovieDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
+
         btn_add_remove_favorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,7 +104,7 @@ public class MovieDetailActivity extends AppCompatActivity {
          *  TODO
          *  1)check if movie has id in request (done)
          *  2)test database (done)
-         *  3)check if button can be changed, if not then change text. ex. Add to favorites -> remove from favorites(done_
+         *  3)check if button can be changed, if not then change text. ex. Add to favorites -> remove from favorites(done)
          *  4)add recyclerView adapter for liked movies
          *  5)check if project needs savedInstance
          *  6)check youtube api from coding with mitch
