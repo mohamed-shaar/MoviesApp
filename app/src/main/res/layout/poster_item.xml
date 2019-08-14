@@ -7,10 +7,10 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="10dp">
 
     <ImageView
-        android:elevation="10dp"
         android:id="@+id/iv_poster"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
