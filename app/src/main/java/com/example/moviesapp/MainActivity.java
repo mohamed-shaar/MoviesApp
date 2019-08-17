@@ -14,6 +14,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moviesapp.adapter.PosterAdapter;
+import com.example.moviesapp.client.JsonPlaceHolderApi;
+import com.example.moviesapp.model.RequestInformation;
+import com.example.moviesapp.model.Result;
+import com.example.moviesapp.utils.GridSpacingItemDecoration;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

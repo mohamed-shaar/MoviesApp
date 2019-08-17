@@ -1,4 +1,4 @@
-package com.example.moviesapp;
+package com.example.moviesapp.client;
 
 import com.example.moviesapp.model.RequestInformation;
 
