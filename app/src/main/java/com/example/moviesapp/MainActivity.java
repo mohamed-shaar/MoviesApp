@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moviesapp.adapter.PosterAdapter;
 import com.example.moviesapp.api.Client;
 import com.example.moviesapp.api.JsonPlaceHolderApi;
+import com.example.moviesapp.model.MovieResult;
 import com.example.moviesapp.model.RequestInformation;
-import com.example.moviesapp.model.Result;
 import com.example.moviesapp.utils.GridSpacingItemDecoration;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
 
     private JsonPlaceHolderApi jsonPlaceHolderApi;
     private ArrayList<String> posterUrls;
-    private List<Result> resultList;
+    private List<MovieResult> movieResultList;
 
     private RecyclerView recyclerView;
     private PosterAdapter posterAdapter;
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
 
         jsonPlaceHolderApi = Client.getRetrofit().create(JsonPlaceHolderApi.class);
         posterUrls = new ArrayList<>();
-        resultList = new ArrayList<Result>();
+        movieResultList = new ArrayList<MovieResult>();
 
         recyclerView = findViewById(R.id.rv_posters);
         progressBar = findViewById(R.id.progressBar);
@@ -85,10 +85,10 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
                 }
                 else {
                     RequestInformation requestInformation = response.body();
-                    resultList = requestInformation.getResults();
-                    for (Result result: requestInformation.getResults()){
-                        Log.d("Poster Path ", BASE_URL + result.getPosterPath());
-                        posterUrls.add(BASE_URL + result.getPosterPath());
+                    movieResultList = requestInformation.getMovieResults();
+                    for (MovieResult movieResult : requestInformation.getMovieResults()){
+                        Log.d("Poster Path ", BASE_URL + movieResult.getPosterPath());
+                        posterUrls.add(BASE_URL + movieResult.getPosterPath());
                     }
                     posterAdapter.notifyDataSetChanged();
                     showRecyclerView();
@@ -120,10 +120,10 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
                 }
                 else {
                     RequestInformation requestInformation = response.body();
-                    resultList = requestInformation.getResults();
-                    for (Result result: requestInformation.getResults()){
-                        Log.d("Poster Path ", BASE_URL + result.getPosterPath());
-                        posterUrls.add(BASE_URL + result.getPosterPath());
+                    movieResultList = requestInformation.getMovieResults();
+                    for (MovieResult movieResult : requestInformation.getMovieResults()){
+                        Log.d("Poster Path ", BASE_URL + movieResult.getPosterPath());
+                        posterUrls.add(BASE_URL + movieResult.getPosterPath());
                     }
                     posterAdapter.notifyDataSetChanged();
                     showRecyclerView();
@@ -166,12 +166,12 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
     @Override
     public void onItemClick(int position) {
         Intent detailIntent = new Intent(this, MovieDetailActivity.class);
-        detailIntent.putExtra(EXTRA_TITLE, resultList.get(position).getTitle());
-        detailIntent.putExtra(EXTRA_RELEASE_DATE, resultList.get(position).getReleaseDate());
-        detailIntent.putExtra(EXTRA_POSTER_PATH, resultList.get(position).getPosterPath());
-        detailIntent.putExtra(EXTRA_VOTE_AVERAGE, resultList.get(position).getVoteAverage());
-        detailIntent.putExtra(EXTRA_PLOT_SYNOPSIS, resultList.get(position).getOverview());
-        detailIntent.putExtra(EXTRA_ID, resultList.get(position).getId());
+        detailIntent.putExtra(EXTRA_TITLE, movieResultList.get(position).getTitle());
+        detailIntent.putExtra(EXTRA_RELEASE_DATE, movieResultList.get(position).getReleaseDate());
+        detailIntent.putExtra(EXTRA_POSTER_PATH, movieResultList.get(position).getPosterPath());
+        detailIntent.putExtra(EXTRA_VOTE_AVERAGE, movieResultList.get(position).getVoteAverage());
+        detailIntent.putExtra(EXTRA_PLOT_SYNOPSIS, movieResultList.get(position).getOverview());
+        detailIntent.putExtra(EXTRA_ID, movieResultList.get(position).getId());
         startActivity(detailIntent);
     }
 
