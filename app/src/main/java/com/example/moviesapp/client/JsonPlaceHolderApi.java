@@ -1,5 +1,7 @@
 package com.example.moviesapp;
 
+import com.example.moviesapp.model.RequestInformation;
+
 import java.util.Map;
 
 import retrofit2.Call;
