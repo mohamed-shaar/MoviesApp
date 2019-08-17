@@ -15,21 +15,18 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviesapp.adapter.PosterAdapter;
-import com.example.moviesapp.client.JsonPlaceHolderApi;
+import com.example.moviesapp.api.Client;
+import com.example.moviesapp.api.JsonPlaceHolderApi;
 import com.example.moviesapp.model.RequestInformation;
 import com.example.moviesapp.model.Result;
 import com.example.moviesapp.utils.GridSpacingItemDecoration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements PosterAdapter.OnItemClickListener{
 
@@ -54,12 +51,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.themoviedb.org/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+        jsonPlaceHolderApi = Client.getRetrofit().create(JsonPlaceHolderApi.class);
         posterUrls = new ArrayList<>();
         resultList = new ArrayList<Result>();
 
@@ -76,11 +68,12 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
     }
 
     private void loadTopRatedMovies() {
-        Map<String, String> parameters = new HashMap<>();
+        //Map<String, String> parameters = new HashMap<>();
         //API key
-        parameters.put("api_key", "f34c452797e2d497fae6179c165c4f4a");
+        //parameters.put("api_key", "f34c452797e2d497fae6179c165c4f4a");
         posterUrls.clear();
-        Call<RequestInformation> call = jsonPlaceHolderApi.getTopRatedMovies(parameters);
+        String apiKey = "f34c452797e2d497fae6179c165c4f4a";
+        Call<RequestInformation> call = jsonPlaceHolderApi.getTopRatedMovies(apiKey);
 
         call.enqueue(new Callback<RequestInformation>() {
             @Override
@@ -110,11 +103,12 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
     }
 
     private void loadPopularMovies(){
-        Map<String, String> parameters = new HashMap<>();
+        //Map<String, String> parameters = new HashMap<>();
         //API key
-        parameters.put("api_key", "f34c452797e2d497fae6179c165c4f4a");
+        //parameters.put("api_key", "f34c452797e2d497fae6179c165c4f4a");
         posterUrls.clear();
-        Call<RequestInformation> call = jsonPlaceHolderApi.getPopularMovies(parameters);
+        String apiKey = "f34c452797e2d497fae6179c165c4f4a";
+        Call<RequestInformation> call = jsonPlaceHolderApi.getPopularMovies(apiKey);
 
         call.enqueue(new Callback<RequestInformation>() {
             @Override
