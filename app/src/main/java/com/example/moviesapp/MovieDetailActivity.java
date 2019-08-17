@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.moviesapp.api.Client;
+import com.example.moviesapp.api.JsonPlaceHolderApi;
 import com.example.moviesapp.room.Movie;
 import com.example.moviesapp.room.MovieViewModel;
 import com.squareup.picasso.Picasso;
@@ -26,6 +28,8 @@ import static com.example.moviesapp.MainActivity.EXTRA_TITLE;
 import static com.example.moviesapp.MainActivity.EXTRA_VOTE_AVERAGE;
 
 public class MovieDetailActivity extends AppCompatActivity {
+
+    public static final String YOUTUBE_URL = "https://www.youtube.com/watch?v=";
 
     private ImageView iv_poster;
     private TextView tv_title;
@@ -47,6 +51,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     private Intent detailIntent;
 
     private Movie movie;
+
+    private JsonPlaceHolderApi jsonPlaceHolderApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +115,9 @@ public class MovieDetailActivity extends AppCompatActivity {
          *  5)check if project needs savedInstance
          *  6)check youtube api from coding with mitch
          */
+
+        jsonPlaceHolderApi = Client.getRetrofit().create(JsonPlaceHolderApi.class);
+
     }
 
     @Override
