@@ -30,6 +30,7 @@ import static com.example.moviesapp.MainActivity.EXTRA_VOTE_AVERAGE;
 public class MovieDetailActivity extends AppCompatActivity {
 
     public static final String YOUTUBE_URL = "https://www.youtube.com/watch?v=";
+    private static final String YOUTUBE_API_KEY = "AIzaSyAkZxHKYUU3XjI0-DuPjd-_gWLfzWVG9Lo";
 
     private ImageView iv_poster;
     private TextView tv_title;
