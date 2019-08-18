@@ -21,8 +21,7 @@ android {
 dependencies {
     def room_version = "2.1.0"
     def lifecycle_version = "2.0.0"
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
@@ -35,11 +34,10 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
-
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 }
