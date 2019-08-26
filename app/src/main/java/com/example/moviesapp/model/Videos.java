@@ -11,7 +11,7 @@ public class Videos {
     @SerializedName("id")
     @Expose
     private long id;
-    @SerializedName("video_results")
+    @SerializedName("results")
     @Expose
     private List<VideoResult> videoResults = new ArrayList<VideoResult>();
 

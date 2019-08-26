@@ -18,9 +18,9 @@ public interface JsonPlaceHolderApi {
     Call<RequestInformation> getTopRatedMovies(@Query("api_key") String apiKey);
 
     @GET("3/movie/{id}/videos")
-    Call<Videos> getVideos(@Query("api_key") String apiKey, @Path("id")String movieId);
+    Call<Videos> getVideos(@Path("id")Integer movieId, @Query("api_key") String apiKey);
 
-    @GET("/3/movie/{id}/reviews")
-    Call<Reviews> getMovieReviews(@Query("api_key") String apiKey, @Path("id")String movieId);
+    @GET("3/movie/{id}/reviews")
+    Call<Reviews> getMovieReviews(@Path("id")Integer movieId, @Query("api_key") String apiKey);
 
 }

@@ -13,11 +13,20 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.moviesapp.api.Client;
 import com.example.moviesapp.api.JsonPlaceHolderApi;
+import com.example.moviesapp.model.ReviewResult;
+import com.example.moviesapp.model.Reviews;
+import com.example.moviesapp.model.VideoResult;
+import com.example.moviesapp.model.Videos;
 import com.example.moviesapp.room.Movie;
 import com.example.moviesapp.room.MovieViewModel;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.example.moviesapp.MainActivity.BASE_URL;
 import static com.example.moviesapp.MainActivity.EXTRA_ID;
@@ -29,8 +38,11 @@ import static com.example.moviesapp.MainActivity.EXTRA_VOTE_AVERAGE;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
-    public static final String YOUTUBE_URL = "https://www.youtube.com/watch?v=";
     private static final String YOUTUBE_API_KEY = "AIzaSyAkZxHKYUU3XjI0-DuPjd-_gWLfzWVG9Lo";
+    private static final String TAG = "MovieDetailActivity";
+
+    //private YouTubePlayerView youTubePlayerView;
+    //private YouTubePlayer.OnInitializedListener initializedListener;
 
     private ImageView iv_poster;
     private TextView tv_title;
@@ -63,6 +75,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         linkView();
         getData();
         setView();
+
+        //youTubePlayerView = findViewById(R.id.view_youtube);
 
         movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
@@ -107,17 +121,70 @@ public class MovieDetailActivity extends AppCompatActivity {
             }
         });
 
-        /**
-         *  TODO
-         *  1)check if movie has id in request (done)
-         *  2)test database (done)
-         *  3)check if button can be changed, if not then change text. ex. Add to favorites -> remove from favorites(done)
-         *  4)add recyclerView adapter for liked movies
-         *  5)check if project needs savedInstance
-         *  6)check youtube api from coding with mitch
-         */
-
         jsonPlaceHolderApi = Client.getRetrofit().create(JsonPlaceHolderApi.class);
+
+        String apiKey = "f34c452797e2d497fae6179c165c4f4a";
+        Call<Videos> trailersCall = jsonPlaceHolderApi.getVideos(id, apiKey);
+        Call<Reviews> reviewsCall = jsonPlaceHolderApi.getMovieReviews(id, apiKey);
+
+        trailersCall.enqueue(new Callback<Videos>() {
+            @Override
+            public void onResponse(Call<Videos> call, Response<Videos> response) {
+                if (!response.isSuccessful()) {
+                    int code = response.code();
+                    Log.d("Video Code: ", String.valueOf(code));
+                    return;
+                }
+                else {
+                    Videos videos = response.body();
+                    final List<VideoResult> videoResultList = videos.getVideoResults();
+                    for (VideoResult current: videoResultList){
+                        Log.d("Video key:", current.getKey());
+                    }
+                    /*initializedListener = new YouTubePlayer.OnInitializedListener() {
+                        @Override
+                        public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+                            Log.d(TAG, "onInitializationSuccess: ");
+                            youTubePlayer.loadVideo(videoResultList.get(0).getKey());
+                        }
+
+                        @Override
+                        public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+                        }
+                    };
+                    youTubePlayerView.initialize(YOUTUBE_API_KEY, initializedListener);*/
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Videos> call, Throwable t) {
+                Log.d("Failure in request: ", t.getMessage());
+            }
+        });
+
+        reviewsCall.enqueue(new Callback<Reviews>() {
+            @Override
+            public void onResponse(Call<Reviews> call, Response<Reviews> response) {
+                if (!response.isSuccessful()) {
+                    int code = response.code();
+                    Log.d("Video Code: ", String.valueOf(code));
+                    return;
+                }
+                else {
+                    Reviews reviews = response.body();
+                    List<ReviewResult> reviewResultList = reviews.getResults();
+                    for (ReviewResult current: reviewResultList){
+                        Log.d("Result: ", current.getAuthor());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Reviews> call, Throwable t) {
+
+            }
+        });
 
     }
 
