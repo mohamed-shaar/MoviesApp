@@ -1,13 +1,15 @@
-package com.example.moviesapp;
+package com.example.moviesapp.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.moviesapp.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -55,7 +57,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
 
         public PosterViewHolder(@NonNull View itemView) {
             super(itemView);
-            iv_poster = itemView.findViewById(R.id.ivposter);
+            iv_poster = itemView.findViewById(R.id.iv_poster);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
