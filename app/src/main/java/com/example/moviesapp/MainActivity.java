@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
                     }
                     posterAdapter.notifyDataSetChanged();
                     showRecyclerView();
-                    Log.d("adapter coubt ",""+ posterAdapter.getItemCount());
+                    Log.d("adapter count ",""+ posterAdapter.getItemCount());
 
                 }
             }

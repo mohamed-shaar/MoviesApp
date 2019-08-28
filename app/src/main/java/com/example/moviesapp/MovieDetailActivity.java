@@ -10,7 +10,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moviesapp.adapter.ReviewsAdapter;
+import com.example.moviesapp.adapter.TrailerAdapter;
 import com.example.moviesapp.api.Client;
 import com.example.moviesapp.api.JsonPlaceHolderApi;
 import com.example.moviesapp.model.ReviewResult;
@@ -21,6 +25,7 @@ import com.example.moviesapp.room.Movie;
 import com.example.moviesapp.room.MovieViewModel;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -36,7 +41,7 @@ import static com.example.moviesapp.MainActivity.EXTRA_RELEASE_DATE;
 import static com.example.moviesapp.MainActivity.EXTRA_TITLE;
 import static com.example.moviesapp.MainActivity.EXTRA_VOTE_AVERAGE;
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity{
 
     private static final String YOUTUBE_API_KEY = "AIzaSyAkZxHKYUU3XjI0-DuPjd-_gWLfzWVG9Lo";
     private static final String TAG = "MovieDetailActivity";
@@ -50,6 +55,10 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView tv_vote_average;
     private TextView tv_plot;
     private Button btn_add_remove_favorites;
+    private RecyclerView rv_trailers;
+    private TrailerAdapter trailerAdapter;
+    private RecyclerView rv_reviews;
+    private ReviewsAdapter reviewsAdapter;
 
     private String title;
     private String release_date;
@@ -58,6 +67,11 @@ public class MovieDetailActivity extends AppCompatActivity {
     private String plot;
     private Integer id;
     private boolean state;
+
+    private ArrayList<String> keys;
+    private ArrayList<String> titles;
+    private ArrayList<String> authorsList;
+    private ArrayList<String> contentList;
 
     private MovieViewModel movieViewModel;
 
@@ -76,13 +90,25 @@ public class MovieDetailActivity extends AppCompatActivity {
         getData();
         setView();
 
-        //youTubePlayerView = findViewById(R.id.view_youtube);
+        rv_trailers = findViewById(R.id.rv_trailers);
+        rv_trailers.setHasFixedSize(false);
+        rv_trailers.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        trailerAdapter = new TrailerAdapter(getApplicationContext(), keys, titles);
+        rv_trailers.setAdapter(trailerAdapter);
+
+        rv_reviews = findViewById(R.id.rv_reviews);
+        rv_reviews.setHasFixedSize(false);
+        rv_reviews.setLayoutManager(new LinearLayoutManager(this));
+        reviewsAdapter = new ReviewsAdapter(getApplicationContext(), authorsList, contentList);
+        rv_reviews.setAdapter(reviewsAdapter);
+
+
+
 
         movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
         movie = new Movie(title, release_date, plot, vote_average, poster_path);
         movie.setId(id);
-        //movieViewModel.insert(movie);
 
         try {
             Movie queriedMovie = movieViewModel.queryById(movie);
@@ -138,22 +164,13 @@ public class MovieDetailActivity extends AppCompatActivity {
                 else {
                     Videos videos = response.body();
                     final List<VideoResult> videoResultList = videos.getVideoResults();
+                    String youtubeThumbnailUrl = "https://img.youtube.com/vi/";
                     for (VideoResult current: videoResultList){
                         Log.d("Video key:", current.getKey());
+                        keys.add(youtubeThumbnailUrl + current.getKey() + "/hqdefault.jpg");
+                        titles.add(current.getName());
                     }
-                    /*initializedListener = new YouTubePlayer.OnInitializedListener() {
-                        @Override
-                        public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                            Log.d(TAG, "onInitializationSuccess: ");
-                            youTubePlayer.loadVideo(videoResultList.get(0).getKey());
-                        }
-
-                        @Override
-                        public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-
-                        }
-                    };
-                    youTubePlayerView.initialize(YOUTUBE_API_KEY, initializedListener);*/
+                    trailerAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -176,13 +193,16 @@ public class MovieDetailActivity extends AppCompatActivity {
                     List<ReviewResult> reviewResultList = reviews.getResults();
                     for (ReviewResult current: reviewResultList){
                         Log.d("Result: ", current.getAuthor());
+                        authorsList.add(current.getAuthor());
+                        contentList.add(current.getContent());
                     }
+                    reviewsAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
             public void onFailure(Call<Reviews> call, Throwable t) {
-
+                Log.d("Failure in request: ", t.getMessage());
             }
         });
 
@@ -220,6 +240,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         tv_release_date.setText(release_date);
         tv_vote_average.setText(String.valueOf(vote_average));
         tv_plot.setText(plot);
+        keys = new ArrayList<>();
+        titles = new ArrayList<>();
+        authorsList = new ArrayList<>();
+        contentList = new ArrayList<>();
     }
-
 }
