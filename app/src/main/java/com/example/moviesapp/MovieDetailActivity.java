@@ -45,6 +45,8 @@ public class MovieDetailActivity extends AppCompatActivity{
 
     private static final String YOUTUBE_API_KEY = "AIzaSyAkZxHKYUU3XjI0-DuPjd-_gWLfzWVG9Lo";
     private static final String TAG = "MovieDetailActivity";
+    //API key
+    private String apiKey = "";
 
     //private YouTubePlayerView youTubePlayerView;
     //private YouTubePlayer.OnInitializedListener initializedListener;
@@ -149,7 +151,7 @@ public class MovieDetailActivity extends AppCompatActivity{
 
         jsonPlaceHolderApi = Client.getRetrofit().create(JsonPlaceHolderApi.class);
 
-        String apiKey = "f34c452797e2d497fae6179c165c4f4a";
+
         Call<Videos> trailersCall = jsonPlaceHolderApi.getVideos(id, apiKey);
         Call<Reviews> reviewsCall = jsonPlaceHolderApi.getMovieReviews(id, apiKey);
 

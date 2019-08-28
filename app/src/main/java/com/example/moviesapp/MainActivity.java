@@ -46,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
     private PosterAdapter posterAdapter;
     private ProgressBar progressBar;
 
+    //API key
+    private String apiKey = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
         //API key
         //parameters.put("api_key", "f34c452797e2d497fae6179c165c4f4a");
         posterUrls.clear();
-        String apiKey = "f34c452797e2d497fae6179c165c4f4a";
         Call<RequestInformation> call = jsonPlaceHolderApi.getTopRatedMovies(apiKey);
 
         call.enqueue(new Callback<RequestInformation>() {
@@ -107,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
         //API key
         //parameters.put("api_key", "f34c452797e2d497fae6179c165c4f4a");
         posterUrls.clear();
-        String apiKey = "f34c452797e2d497fae6179c165c4f4a";
         Call<RequestInformation> call = jsonPlaceHolderApi.getPopularMovies(apiKey);
 
         call.enqueue(new Callback<RequestInformation>() {

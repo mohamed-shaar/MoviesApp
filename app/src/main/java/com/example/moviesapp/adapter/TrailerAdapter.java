@@ -64,7 +64,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO youtube intent
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION){
                         String trailerId = thumbnailUrls.get(position);
