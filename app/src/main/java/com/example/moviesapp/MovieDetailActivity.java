@@ -46,7 +46,7 @@ public class MovieDetailActivity extends AppCompatActivity{
     private static final String YOUTUBE_API_KEY = "AIzaSyAkZxHKYUU3XjI0-DuPjd-_gWLfzWVG9Lo";
     private static final String TAG = "MovieDetailActivity";
     //API key
-    private String apiKey = "";
+    private String apiKey = "f34c452797e2d497fae6179c165c4f4a";
 
     //private YouTubePlayerView youTubePlayerView;
     //private YouTubePlayer.OnInitializedListener initializedListener;
@@ -246,5 +246,6 @@ public class MovieDetailActivity extends AppCompatActivity{
         titles = new ArrayList<>();
         authorsList = new ArrayList<>();
         contentList = new ArrayList<>();
+        setTitle(title);
     }
 }

@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
     private ProgressBar progressBar;
 
     //API key
-    private String apiKey = "";
+    private String apiKey = "f34c452797e2d497fae6179c165c4f4a";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

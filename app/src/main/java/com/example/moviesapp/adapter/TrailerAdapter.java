@@ -43,7 +43,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         String thumbnailUrl = thumbnailUrls.get(position);
         String title = titles.get(position);
         holder.tv_trailer_name.setText(title);
-        Picasso.get().load(thumbnailUrl).centerCrop().fit().into(holder.iv_trailer_thumbnail);
+        Picasso.get().load(thumbnailUrl).fit().centerCrop().into(holder.iv_trailer_thumbnail);
     }
 
     @Override
