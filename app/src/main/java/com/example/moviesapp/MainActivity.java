@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
         //API key
         //parameters.put("api_key", "f34c452797e2d497fae6179c165c4f4a");
         posterUrls.clear();
+        setTitle(R.string.top_rated_movies);
         Call<RequestInformation> call = jsonPlaceHolderApi.getTopRatedMovies(apiKey);
 
         call.enqueue(new Callback<RequestInformation>() {
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
         //Map<String, String> parameters = new HashMap<>();
         //API key
         //parameters.put("api_key", "f34c452797e2d497fae6179c165c4f4a");
+        setTitle(R.string.popular_movies);
         posterUrls.clear();
         Call<RequestInformation> call = jsonPlaceHolderApi.getPopularMovies(apiKey);
 
