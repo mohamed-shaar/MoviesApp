@@ -1,6 +1,7 @@
 package com.example.moviesapp;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +40,7 @@ import static com.example.moviesapp.MainActivity.EXTRA_PLOT_SYNOPSIS;
 import static com.example.moviesapp.MainActivity.EXTRA_POSTER_PATH;
 import static com.example.moviesapp.MainActivity.EXTRA_RELEASE_DATE;
 import static com.example.moviesapp.MainActivity.EXTRA_TITLE;
+import static com.example.moviesapp.MainActivity.EXTRA_TRANSITION_NAME;
 import static com.example.moviesapp.MainActivity.EXTRA_VOTE_AVERAGE;
 
 public class MovieDetailActivity extends AppCompatActivity{
@@ -82,6 +84,8 @@ public class MovieDetailActivity extends AppCompatActivity{
     private Movie movie;
 
     private JsonPlaceHolderApi jsonPlaceHolderApi;
+
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -233,11 +237,26 @@ public class MovieDetailActivity extends AppCompatActivity{
         vote_average = detailIntent.getFloatExtra(EXTRA_VOTE_AVERAGE, 0);
         plot = detailIntent.getStringExtra(EXTRA_PLOT_SYNOPSIS);
         id = detailIntent.getIntExtra(EXTRA_ID, 0);
+        bundle = detailIntent.getExtras();
     }
 
     private void setView(){
         String posterUrl = BASE_URL + poster_path;
-        Picasso.get().load(posterUrl).fit().centerCrop().into(iv_poster);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            String imageTransitionName = bundle.getString(EXTRA_TRANSITION_NAME);
+            iv_poster.setTransitionName(imageTransitionName);
+        }
+        Picasso.get().load(posterUrl).fit().centerCrop().into(iv_poster, new com.squareup.picasso.Callback() {
+            @Override
+            public void onSuccess() {
+                supportStartPostponedEnterTransition();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                supportStartPostponedEnterTransition();
+            }
+        });
         tv_title.setText(title);
         tv_release_date.setText(release_date);
         tv_vote_average.setText(String.valueOf(vote_average));

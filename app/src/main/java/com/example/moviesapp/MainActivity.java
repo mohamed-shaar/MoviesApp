@@ -8,9 +8,12 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,13 +25,13 @@ import com.example.moviesapp.model.RequestInformation;
 import com.example.moviesapp.utils.GridSpacingItemDecoration;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements PosterAdapter.OnItemClickListener{
+public class MainActivity extends AppCompatActivity implements PosterClickListener{
 
     public static final String EXTRA_TITLE = "title";
     public static final String EXTRA_RELEASE_DATE = "release_date";
@@ -36,15 +39,18 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
     public static final String EXTRA_VOTE_AVERAGE = "vote_average";
     public static final String EXTRA_PLOT_SYNOPSIS = "plot_synopsis";
     public static final String EXTRA_ID = "id";
+    public static final String EXTRA_TRANSITION_NAME = "transition_name";
     public static final String BASE_URL = "http://image.tmdb.org/t/p/original";
 
     private JsonPlaceHolderApi jsonPlaceHolderApi;
     private ArrayList<String> posterUrls;
-    private List<MovieResult> movieResultList;
+    private ArrayList<MovieResult> movieResults;
 
     private RecyclerView recyclerView;
     private PosterAdapter posterAdapter;
     private ProgressBar progressBar;
+
+    GridLayoutManager manager;
 
     //API key
     private String apiKey = "f34c452797e2d497fae6179c165c4f4a";
@@ -56,18 +62,18 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
 
         jsonPlaceHolderApi = Client.getRetrofit().create(JsonPlaceHolderApi.class);
         posterUrls = new ArrayList<>();
-        movieResultList = new ArrayList<MovieResult>();
+        movieResults = new ArrayList<>();
 
         recyclerView = findViewById(R.id.rv_posters);
         progressBar = findViewById(R.id.progressBar);
         showProgressBar();
         recyclerView.setHasFixedSize(false);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        manager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(manager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dptopx(2), true));
         loadPopularMovies();
-        posterAdapter = new PosterAdapter(MainActivity.this, posterUrls);
+        posterAdapter = new PosterAdapter(MainActivity.this, posterUrls, movieResults, this);
         recyclerView.setAdapter(posterAdapter);
-        posterAdapter.setOnItemClickListener(MainActivity.this);
     }
 
     private void loadTopRatedMovies() {
@@ -88,10 +94,10 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
                 }
                 else {
                     RequestInformation requestInformation = response.body();
-                    movieResultList = requestInformation.getMovieResults();
                     for (MovieResult movieResult : requestInformation.getMovieResults()){
                         Log.d("Poster Path ", BASE_URL + movieResult.getPosterPath());
                         posterUrls.add(BASE_URL + movieResult.getPosterPath());
+                        movieResults.add(movieResult);
                     }
                     posterAdapter.notifyDataSetChanged();
                     showRecyclerView();
@@ -123,10 +129,10 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
                 }
                 else {
                     RequestInformation requestInformation = response.body();
-                    movieResultList = requestInformation.getMovieResults();
                     for (MovieResult movieResult : requestInformation.getMovieResults()){
                         Log.d("Poster Path ", BASE_URL + movieResult.getPosterPath());
                         posterUrls.add(BASE_URL + movieResult.getPosterPath());
+                        movieResults.add(movieResult);
                     }
                     posterAdapter.notifyDataSetChanged();
                     showRecyclerView();
@@ -166,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
 
     }
 
-    @Override
+    /*@Override
     public void onItemClick(int position) {
         Intent detailIntent = new Intent(this, MovieDetailActivity.class);
         detailIntent.putExtra(EXTRA_TITLE, movieResultList.get(position).getTitle());
@@ -175,8 +181,11 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
         detailIntent.putExtra(EXTRA_VOTE_AVERAGE, movieResultList.get(position).getVoteAverage());
         detailIntent.putExtra(EXTRA_PLOT_SYNOPSIS, movieResultList.get(position).getOverview());
         detailIntent.putExtra(EXTRA_ID, movieResultList.get(position).getId());
-        startActivity(detailIntent);
-    }
+
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, manager.findViewByPosition(position), getString(R.string.trailer_name));
+        //ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, sharedView, getString(R.string.trailer_name));
+        startActivity(detailIntent, optionsCompat.toBundle());
+    }*/
 
     private int dptopx(int dp){
         Resources resource = getResources();
@@ -190,5 +199,24 @@ public class MainActivity extends AppCompatActivity implements PosterAdapter.OnI
     private void showRecyclerView(){
         progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onPosterItemClick(int i, MovieResult movieResult, ImageView shareImageView) {
+        Intent detailIntent = new Intent(this, MovieDetailActivity.class);
+        detailIntent.putExtra(EXTRA_TITLE, movieResults.get(i).getTitle());
+        detailIntent.putExtra(EXTRA_RELEASE_DATE, movieResults.get(i).getReleaseDate());
+        detailIntent.putExtra(EXTRA_POSTER_PATH, movieResults.get(i).getPosterPath());
+        detailIntent.putExtra(EXTRA_VOTE_AVERAGE, movieResults.get(i).getVoteAverage());
+        detailIntent.putExtra(EXTRA_PLOT_SYNOPSIS, movieResults.get(i).getOverview());
+        detailIntent.putExtra(EXTRA_ID, movieResults.get(i).getId());
+        detailIntent.putExtra(EXTRA_TRANSITION_NAME, ViewCompat.getTransitionName(shareImageView));
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this,
+                shareImageView,
+                Objects.requireNonNull(ViewCompat.getTransitionName(shareImageView)));
+
+        startActivity(detailIntent, options.toBundle());
     }
 }

@@ -9,4 +9,5 @@
     <string name="trailer_name">Trailer Name</string>
     <string name="author">Author</string>
     <string name="content">Content</string>
+    <string name="transition_name">transition_image</string>
 </resources>

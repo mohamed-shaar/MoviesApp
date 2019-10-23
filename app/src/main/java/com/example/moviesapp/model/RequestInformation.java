@@ -3,7 +3,7 @@ package com.example.moviesapp.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class RequestInformation {
     @SerializedName("page")
@@ -17,7 +17,7 @@ public class RequestInformation {
     private Integer totalPages;
     @SerializedName("results")
     @Expose
-    private List<MovieResult> movieResults = null;
+    private ArrayList<MovieResult> movieResults = null;
 
     public Integer getPage() {
         return page;
@@ -43,11 +43,11 @@ public class RequestInformation {
         this.totalPages = totalPages;
     }
 
-    public List<MovieResult> getMovieResults() {
+    public ArrayList<MovieResult> getMovieResults() {
         return movieResults;
     }
 
-    public void setMovieResults(List<MovieResult> movieResults) {
+    public void setMovieResults(ArrayList<MovieResult> movieResults) {
         this.movieResults = movieResults;
     }
 }
